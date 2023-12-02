@@ -47,5 +47,6 @@ if not os.path.exists(extracted_archive_path):
     shutil.unpack_archive(archive_name, args.install_dir)
     os.remove(archive_name)
 
+# NOTE: on Windows you will probably need to enable permission to create symlinks: https://www.scivision.dev/windows-symbolic-link-permission-enable/
 os.symlink(os.path.join(extracted_archive_path, "zig" + info["exe_ext"]),
            os.path.join(args.install_dir, "zig" + info["exe_ext"]))
