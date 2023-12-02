@@ -33,8 +33,6 @@ full_url = "{}-{}-{}{}".format(base_url, info["name"], args.version, info["ext"]
 
 Path(args.install_dir).mkdir(parents=True, exist_ok=True)
 
-Path("/path/to/file.txt").stem
-
 archive_name = os.path.basename(full_url)
 extracted_archive_path = os.path.join(args.install_dir, Path(full_url).with_suffix('').stem)
 
