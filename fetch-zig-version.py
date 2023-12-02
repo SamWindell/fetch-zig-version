@@ -16,33 +16,36 @@ base_url = "https://ziglang.org/builds/zig"
 infos = {
     "Windows": {
         "name": "windows-x86_64",
-        "ext": ".zip",
+        "archive_ext": ".zip",
+        "exe_ext": ".exe",
     },
     "Linux": {
         "name": "linux-x86_64",
-        "ext": ".tar.xz",
+        "archive_ext": ".tar.xz",
+        "exe_ext": "",
     },
     "Darwin": {
         "name": "macos-aarch64",
-        "ext": ".tar.xz",
+        "archive_ext": ".tar.xz",
+        "exe_ext": "",
     },
 }
 
 info = infos[platform.system()]
 
 full_url = "{}-{}-{}{}".format(base_url,
-                               info["name"], args.version, info["ext"])
+                               info["name"], args.version, info["archive_ext"])
 
 Path(args.install_dir).mkdir(parents=True, exist_ok=True)
 
 archive_name = os.path.basename(full_url)
 extracted_archive_path = os.path.join(
-    args.install_dir, Path(full_url).with_suffix('').stem)
+    args.install_dir, os.path.basename(full_url)[:-len(info["archive_ext"])])
 
 if not os.path.exists(extracted_archive_path):
     urllib.request.urlretrieve(full_url, archive_name)
     shutil.unpack_archive(archive_name, args.install_dir)
     os.remove(archive_name)
 
-os.symlink(os.path.join(extracted_archive_path, "zig"),
-           os.path.join(args.install_dir, "zig"))
+os.symlink(os.path.join(extracted_archive_path, "zig" + info["exe_ext"]),
+           os.path.join(args.install_dir, "zig" + info["exe_ext"]))
